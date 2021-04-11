@@ -179,7 +179,6 @@ void wrappers_command(int argc, char **argv)
             "-lSDL2");
     }
 
-#ifndef _WIN32
     // FFTW wrapper
     {
         CMD("cc", CFLAGS,
