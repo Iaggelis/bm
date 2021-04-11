@@ -179,6 +179,30 @@ void wrappers_command(int argc, char **argv)
             "-lSDL2");
     }
 
+#ifndef _WIN32
+    // FFTW wrapper
+    {
+        CMD("cc", CFLAGS,
+            "-c", "-fpic",
+#ifdef __FreeBSD__
+            // NOTE: Technically, this should be determined by pkg-config
+            "-I/usr/local/include",
+#endif
+            "-I", PATH("src", "library"),
+            "-o", PATH("build", "wrappers", "bm_fftw.o"),
+            PATH("wrappers", "bm_fftw.c"));
+
+        CMD("cc", CFLAGS,
+            "-shared",
+#ifdef __FreeBSD__
+            // NOTE: See above
+            "-L/usr/local/lib",
+#endif
+            "-o", PATH("build", "wrappers", "libbm_fftw.so"),
+            PATH("build", "wrappers", "bm_fftw.o"),
+            "-lfftw3");
+    }
+
     // hello wrapper
     {
         CMD("cc", CFLAGS,
